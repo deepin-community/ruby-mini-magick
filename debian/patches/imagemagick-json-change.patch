@@ -1,0 +1,26 @@
+Description: correctly convert NaN values for JSON output
+ Date: Tue, 23 Jan 2018 12:45:18 -0600
+Bug: https://github.com/minimagick/minimagick/issues/434
+Bug-Debian: https://bugs.debian.org/892189
+Origin: https://github.com/MadeInSyria/minimagick/commit/a3a92ed31bc750901078b3a4e93c1b1c8b7ff6dd
+From: Omar Alaouf <omar.alaouf@heyjoy.io>
+---
+ lib/mini_magick/image/info.rb | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- a/lib/mini_magick/image/info.rb
++++ b/lib/mini_magick/image/info.rb
+@@ -158,10 +158,10 @@
+         @info["data"] ||= (
+           json = MiniMagick::Tool::Convert.new do |convert|
+             convert << path
+-            convert << "json:"
++            convert << "json:"  #### added -
+           end
+-
+-          data = JSON.parse(json)
++          ### nan -> NaN, accept NaN when parsing JSON
++          data = JSON.parse(json.gsub(/: -?nan/, ': NaN').gsub("\r",''), allow_nan: true)
+           data = data.fetch(0) if data.is_a?(Array)
+           data.fetch("image")
+         )

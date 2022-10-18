@@ -1,0 +1,11 @@
+Description: Don_t_fail_fast
+--- a/spec/spec_helper.rb
++++ b/spec/spec_helper.rb
+@@ -7,7 +7,6 @@
+   config.disable_monkey_patching!
+   config.formatter = "documentation"
+   config.color = true
+-  config.fail_fast = true unless ENV["CI"]
+   config.filter_run :focus
+   config.run_all_when_everything_filtered = true
+ 

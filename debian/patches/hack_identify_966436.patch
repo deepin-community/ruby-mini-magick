@@ -1,0 +1,23 @@
+Description: Hack to fix identify parsing with newer imagemagick
+Bug-Debian: https://bugs.debian.org/966436
+Bug: https://github.com/minimagick/minimagick/issues/518
+Author: Cédric Boutillier <boutil@debian.org>
+Last-Update: 2020-08-25
+
+--- ruby-mini-magick-4.9.5.orig/lib/mini_magick/image/info.rb
++++ ruby-mini-magick-4.9.5/lib/mini_magick/image/info.rb
+@@ -136,7 +136,13 @@ module MiniMagick
+               # indentation, resulting in a level of -1
+               last_key = details_hash.keys.last
+               details_hash[last_key] = '' if details_hash[last_key].empty?
+-              details_hash[last_key] << line
++              # hack to accomodate with newer identify output
++              if details_hash[last_key].class==Hash
++                fkey = details_hash[last_key].keys.first
++                details_hash[last_key][fkey] << line
++              else
++                details_hash[last_key] << line
++              end
+               next
+             end
+ 

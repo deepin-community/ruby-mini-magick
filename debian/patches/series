@@ -1,0 +1,6 @@
+don_t_fail_fast.patch
+remove-rubygems
+remove-deprecated-test.patch
+imagemagick-json-change.patch
+#skip-details-spec-966436.patch
+hack_identify_966436.patch
